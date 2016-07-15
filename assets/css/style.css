@@ -2,53 +2,21 @@
   box-sizing: border-box;
 }
 body {
-	background: #ccc;
+	background: #5f8dbe;
 	font-size: 18px;
-	line-height: 27px;
+	line-height: 150%;
+	font-family: Arial, sans-serif;
 }
 .wrapper {
 	width: 1024px;
 	margin: 40px auto;
-}
-#main-content,
-#sidebar {
-	width: 500px;
-	padding: 30px;
-}
-#main-content {
-	float: left;
-	background: #fff;
-}
-#sidebar {
-	float: right;
-	background: #eee;
+	text-align: center;
 }
 
-@media screen and (max-width: 768px) {
+#picDisplay {
+	margin: 20px;
+}
 
-	body {
-		background-color: #333;
-	}
-
-	.wrapper {
-		width: 600px;
-		margin: 40px auto;
-	}
-
-	#main-content,
-	#sidebar {
-		width: 500px;
-		padding: 30px;
-		margin: 20px auto;
-	}
-
-	#main-content {
-		float: left;
-		background: #fff;
-	}
-
-	#sidebar {
-		float: left;
-		background: #eee;
-	}
+#wordDisplay {
+	font-size: 24px;
 }
