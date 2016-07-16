@@ -7,6 +7,16 @@ body {
 	line-height: 150%;
 	font-family: Arial, sans-serif;
 }
+
+h1, p {
+	font-weight: bold;
+}
+
+h4 {
+	font-style: italic;
+}
+
+
 .wrapper {
 	width: 1024px;
 	margin: 40px auto;

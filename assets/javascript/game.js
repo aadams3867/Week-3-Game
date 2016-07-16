@@ -78,8 +78,6 @@ var Pokedex = [
 		"MEWTWO"
 ];
 
-// Declare a global variable
-// var numWins = 0;
 
 // Declare the object
 var hangman = {
@@ -87,10 +85,11 @@ var hangman = {
 	winLose: "",
 
 	numTriesLeft: 10,
-	wordArray: [],
-	lettersGuessed: [],				    	// Stored guesses
-	wordGuessed: [],						// User's guess at the word so far
-	correctGuessCount: 0,
+	word: "",								// String holding the random word
+	wordArray: [],							// Array holding the random word
+	lettersGuessed: [],				    	// Array storing user's letter guesses
+	wordGuessed: [],						// Array keeping user's guess at the word so far
+	correctGuessCount: 0,					// Number of letters guessed correctly so far
 	wordComplete : false
 };
 
@@ -98,34 +97,34 @@ var hangman = {
 // ** Fresh game **
 // 
 
+function updatePic() {
+	// Displaying the updated pic
+	var pic = document.getElementById("picDisplay").src=("assets/images/" + hangman.word + ".jpg");
+	document.getElementById("picDisplay").innerHTML = pic;
+}
+
 function setup() {
-	//  Game variables are initialized
+	//  Initialize game variables
 	hangman.numTriesLeft = 10;
 	hangman.wordArray = [];
-	hangman.lettersGuessed = [];                // Stored guesses
-	hangman.wordGuessed = [];  					// User's guess at the word so far
+	hangman.lettersGuessed = [];
+	hangman.wordGuessed = [];
 	hangman.correctGuessCount = 0;
 	hangman.wordComplete = false;
 
 	// Computer picks a random word from the Pokedex array
-	var word = Pokedex[Math.floor(Math.random()*Pokedex.length)];
+	hangman.word = Pokedex[Math.floor(Math.random()*Pokedex.length)];
 
 	// Convert the random word into an array of characters
-	hangman.wordArray = word.split("");
+	hangman.wordArray = hangman.word.split("");
 	console.log("\n" + hangman.wordArray);
 
-	// Displaying the pic
-/*	var pic = document.getElementById("picDisplay");
-	function changeImage() {
-		pic.setAttribute("src", "assets/images/" + word + ".jpg");
-	}*/
-
-	// Displaying the word as blanks
+	// Displaying the random word as blanks
 	for (var i = 0; i < hangman.wordArray.length; i++) {
 		hangman.wordGuessed.push("  _____");
 	}
 	document.getElementById("wordDisplay").innerHTML = hangman.wordGuessed;
-	console.log(hangman.wordGuessed + " " + hangman.wordComplete);
+	console.log(hangman.wordGuessed);
 }
 
 
@@ -133,18 +132,19 @@ function setup() {
 function writeStats() {
 	
 	var stats = "<br>" +
-	"---------------------------------------------------------" + "<br>" +
+	"-----------------------------------------------------------------------------" + "<br>" +
 	hangman.winLose + "<br>" + 
 	"Pokémon caught: " + hangman.numWins + "<br>" + 
 	"Number of tries left: " + hangman.numTriesLeft + "<br>" + 
 	"Letters guessed: " + hangman.lettersGuessed + "<br>" + 
-	"---------------------------------------------------------";
+	"-----------------------------------------------------------------------------";
 	document.getElementById("statsDisplay").innerHTML = stats;
 }
 
 
 function initialSetup() {
 	setup();
+	updatePic();
 	writeStats();
 }
 
@@ -157,7 +157,7 @@ function initialSetup() {
 // Capture user input
 document.onkeyup = function(event) {
 
-	// Validates and changes the user input to uppercase
+	// Validates and changes the user's letter input to uppercase
 	var userInput = String.fromCharCode(event.keyCode);
 
 	var validLetters = /^[A-Za-z]+$/;
@@ -193,33 +193,32 @@ document.onkeyup = function(event) {
 		}
 	}
 
-	// Bad guess...
+	// Bad guess only...
 	if (goodGuess == false) {
 		hangman.numTriesLeft--;
 	}
 
 	// Good or bad guess
 	hangman.lettersGuessed.push(userInput);
+	writeStats();
+	console.log(userInput + " numTriesLeft: " + hangman.numTriesLeft + " wordComplete: " + hangman.wordComplete);
+	console.log(hangman.wordGuessed + " correctGuessCount: " + hangman.correctGuessCount);
 
 	// Checks to see if the game is over yet
-	if ((hangman.numTriesLeft > 0) && (hangman.wordComplete == false)) {
-		console.log("numTriesLeft: " + hangman.numTriesLeft + " " + userInput + " " + hangman.wordComplete);
-		console.log(hangman.wordGuessed);
-		writeStats();
-	} else {
+	if ((hangman.numTriesLeft == 0) || (hangman.wordComplete == true)) {
 		gameOver();
 	}
 }
 
 //
-// ** Determine if the game was won or lost, and then immediately reset for a new game **
+// ** Game over!  Determine if the user won or lost, and then immediately reset for a new game **
 //
 
 function gameOver() {
-	if (hangman.numTriesLeft == 0) {           // Game lost
-		hangman.winLose = "You did NOT catch your last Pokémon!  It ran away.";
-	} else if (hangman.wordComplete == true){  // Game won!
-		hangman.winLose = "Hooray!  You caught your last Pokémon!!";
+	if (hangman.numTriesLeft == 0) {           // User lost!
+		hangman.winLose = "You did NOT catch your last Pokémon!  " + hangman.word + " ran away.";
+	} else if (hangman.wordComplete == true){  // User won!
+		hangman.winLose = "Hooray!  You caught your last Pokémon, " + hangman.word + "!!";
 		hangman.numWins++;
 	}
 	initialSetup();
