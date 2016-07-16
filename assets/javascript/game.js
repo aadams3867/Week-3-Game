@@ -217,9 +217,12 @@ document.onkeyup = function(event) {
 function gameOver() {
 	if (hangman.numTriesLeft == 0) {           // User lost!
 		hangman.winLose = "You did NOT catch your last Pokémon!  " + hangman.word + " ran away.";
+		var audio = new Audio('assets/sounds/defeat.mp3');
 	} else if (hangman.wordComplete == true){  // User won!
 		hangman.winLose = "Hooray!  You caught your last Pokémon, " + hangman.word + "!!";
 		hangman.numWins++;
+		var audio = new Audio('assets/sounds/victory.mp3');
 	}
+	audio.play();
 	initialSetup();
 }
