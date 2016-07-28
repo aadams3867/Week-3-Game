@@ -101,7 +101,8 @@ var hangman = {
 function updatePic() {
 	// Displaying the updated pic
 	var pic = document.getElementById("picDisplay").src=("assets/images/" + hangman.word + ".jpg");
-	document.getElementById("picDisplay").innerHTML = pic;
+	//document.getElementById("picDisplay").innerHTML = pic;
+	pic.innerHTML;
 }
 
 function setup() {
